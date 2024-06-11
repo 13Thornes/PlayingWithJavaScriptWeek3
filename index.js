@@ -1,9 +1,9 @@
 const http = require('http');
 
 // serveText('Hello World');
-// serveHtml('<html><body><b>Woot</b>Woot</body></html>')
+serveHtml('<html><body><b>Woot</b>Woot</body></html>')
 // serveFile('index.html');
-serveJson('{"name": "John", "age": 30, "city": "New York"}');
+// serveJson('{"name": "John", "age": 30, "city": "New York"}');
 
 function serveText(theText) {
     const server = http.createServer(function (req, res) {
@@ -45,19 +45,19 @@ function serveHtml(TheHtml) {
         });
       }
       
-      function serveJson(theJson){
-        const server = http.createServer(function (req, res) {
-          console.log(req.method);
-          console.log('json was served.')
-          res.writeHead(200, {'Content-Type': 'application/json'});
-          res.write(theJson);
-          res.end();
-        });
+    //   function serveJson(theJson){
+    //     const server = http.createServer(function (req, res) {
+    //       console.log(req.method);
+    //       console.log('json was served.')
+    //       res.writeHead(200, {'Content-Type': 'application/json'});
+    //       res.write(theJson);
+    //       res.end();
+    //     });
       
-        server.listen(3000, () => {
-          console.log('Server is running on port 3000');
-        });
-      }
+    //     server.listen(3000, () => {
+    //       console.log('Server is running on port 3000');
+    //     });
+    //   }
 }
 
 
