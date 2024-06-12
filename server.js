@@ -2,50 +2,42 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
+const route = require('./routes.js');
+const myEmitter = require('./logEvents.js');
+
 global.DEBUG = false;
 
-function fetchFile(fileName, res) {
-    fs.readFile(fileName, (error, content) => {
-        if(error) {
-            res.writeHead(500, { 'Content-Type': 'text/plain'});
-            res.end('500 Internal Server Error')
-        } else {
-            res.writeHead(200, { 'Content-Type': 'text/html'});
-            res.end(content, 'utf-8')
-        };
-    });
-}
-
-
-
-const server = http.createServer((req,res) => {
- if(DEBUG) console.log('Request Url:', req.url);
- let path = './views/'
- switch (req.url) {
+const server = http.createServer((request, response) => {
+  if(DEBUG) console.log('Request Url:', request.url);
+  let path = './views/';
+  switch(request.url) {
     case '/':
-        path += 'index.html';
-        if(DEBUG) console.log("Index page")
-        fetchFile(path, res);
-        break;
+      path += 'index.html';
+      if(DEBUG) console.log(path);
+      route.indexPage(path, response);
+      myEmitter.emit('route', path);
+      break;
     case '/about':
-        path += 'about.html';
-        if(DEBUG) console.log("About page")
-        fetchFile(path, res);
-        break;
-        
+      path += 'about.html';
+      if(DEBUG) console.log(path);
+      route.aboutPage(path, response);
+      myEmitter.emit('route', path);
+      break;
     case '/home':
-        path += 'home.html'
-        if(DEBUG) console.log("Home page")
-        fetchFile(path, res)
-        break;
+      path += 'home.html';
+      if(DEBUG) console.log(path);
+      route.homePage(path, response);
+      myEmitter.emit('route', path);
+      break;
     default:
-        if(DEBUG) console.log('404 Not Found');
-        res.writeHead(404, { 'Content-Type': 'text/plain'});
-        res.end('404 Not Found')
-        break;
- }
+      if(DEBUG) console.log('404 Not Found');
+      myEmitter.emit('error', '404 Not Found');
+      response.writeHead(404, { 'Content-Type': 'text/plain' });
+      response.end('404 Not Found');
+      break;
+  }
 });
 
 server.listen(3000, () => {
-    console.log('Server is running');
+  console.log('Server is running...');
 });
