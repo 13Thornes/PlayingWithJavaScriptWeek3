@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node": "^20.14.0",
+    "bcrypt": "^5.1.1",
+    "date-fns": "^3.6.0",
+    "uuid": "^10.0.0",
     "validator": "^13.12.0"
   }
 }
